@@ -5,8 +5,13 @@
 
     <xacro:arg name="robot_namespace" default="/" /> 
 
-    <xacro:include filename="$(find wrp_ros2)/urdf/scout_v2/scout_wheel_type1.xacro" />
-    <xacro:include filename="$(find wrp_ros2)/urdf/scout_v2/scout_wheel_type2.xacro" />
+    <xacro:include filename="$(find bss_shelf_description)/urdf/scout_wheel_type1.xacro" />
+    <xacro:include filename="$(find bss_shelf_description)/urdf/scout_wheel_type2.xacro" />
+
+    <xacro:include filename="$(find bss_shelf_description)/urdf/materials.xacro" />
+    <xacro:include filename="$(find bss_shelf_description)/urdf/finalShelf.trans" />
+    <xacro:include filename="$(find bss_shelf_description)/urdf/finalShelf.gazebo" />
+
 
     <!-- Variables -->
     <xacro:property name="M_PI" value="3.14159"/>
@@ -28,7 +33,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://wrp_ros2/meshes/scout_v2/base_link.dae" />
+                <mesh filename="package://bss_shelf_description/meshes/scout_v2/base_link.dae" />
             </geometry>
         </visual>
         <collision>
@@ -67,22 +72,6 @@
         <child link="inertial_link" />
     </joint>
 
-    <!-- Scout wheel macros -->
-    <!-- wheel labeled from 0 to 3, conter-clockwise, starting from front right wheel -->
-    <!-- motor 1 and 2 (left side) are mechanically installed in a reversed direction -->
-    <xacro:scout_wheel_type1 wheel_prefix="front_right">
-        <origin xyz="${wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="3.14 0 0" />
-    </xacro:scout_wheel_type1>
-    <xacro:scout_wheel_type2 wheel_prefix="front_left">
-        <origin xyz="${wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
-    </xacro:scout_wheel_type2>
-    <xacro:scout_wheel_type2 wheel_prefix="rear_left">
-        <origin xyz="${-wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
-    </xacro:scout_wheel_type2>
-    <xacro:scout_wheel_type1 wheel_prefix="rear_right">
-        <origin xyz="${-wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="3.14 0 0" />
-    </xacro:scout_wheel_type1>
-
     <!--Bookshelf link-->
     <link name="housing_link">
         <inertial>
@@ -93,14 +82,14 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://wrp_ros2/meshes/scout_v2/base_link.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="package://bss_shelf_description/meshes/housing_link.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="silver"/>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://wrp_ros2/meshes/scout_v2/base_link.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="package://bss_shelf_description/meshes/housing_link.stl" scale="0.001 0.001 0.001"/>
             </geometry>
         </collision>
     </link>
@@ -114,14 +103,14 @@
         <visual>
             <origin xyz="0.01 0.115 -0.204" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://wrp_ros2/meshes/scout_v2/l1_shelf_front_1.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="package://bss_shelf_description/meshes/l1_shelf_front_1.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="silver"/>
         </visual>
         <collision>
             <origin xyz="0.01 0.115 -0.204" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://wrp_ros2/meshes/scout_v2/l1_shelf_front_1.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="package://bss_shelf_description/meshes/l1_shelf_front_1.stl" scale="0.001 0.001 0.001"/>
             </geometry>
         </collision>
     </link>
@@ -135,27 +124,43 @@
         <visual>
             <origin xyz="-0.01 0.115 -0.204" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://wrp_ros2/meshes/scout_v2/l1_shelf_back_1.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="package://bss_shelf_description/meshes/l1_shelf_back_1.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="silver"/>
         </visual>
         <collision>
             <origin xyz="-0.01 0.115 -0.204" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://wrp_ros2/meshes/scout_v2/l1_shelf_back_1.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="package://bss_shelf_description/meshes/l1_shelf_back_1.stl" scale="0.001 0.001 0.001"/>
             </geometry>
         </collision>
     </link>
 
+    <!-- Scout wheel macros -->
+    <!-- wheel labeled from 0 to 3, conter-clockwise, starting from front right wheel -->
+    <!-- motor 1 and 2 (left side) are mechanically installed in a reversed direction -->
+    <xacro:scout_wheel_type1 wheel_prefix="front_right">
+        <origin xyz="${wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="3.14 0 0" />
+    </xacro:scout_wheel_type1>
+    <xacro:scout_wheel_type2 wheel_prefix="front_left">
+        <origin xyz="${wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+    </xacro:scout_wheel_type2>
+    <xacro:scout_wheel_type1 wheel_prefix="rear_left">
+        <origin xyz="${-wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+    </xacro:scout_wheel_type1>
+    <xacro:scout_wheel_type2 wheel_prefix="rear_right">
+        <origin xyz="${-wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="3.14 0 0" />
+    </xacro:scout_wheel_type2>
+
     <!--Bookshelf joint-->
-    <joint name="Rev1" type="fixed">
+    <joint name="Rev1" type="continuous">
         <origin xyz="-0.01 -0.115 0.204" rpy="0 0 0"/>
         <parent link="housing_link"/>
         <child link="l1_shelf_front_1"/>
         <axis xyz="-1.0 0.0 0.0"/>
     </joint>
 
-    <joint name="Rev2" type="fixed">
+    <joint name="Rev2" type="continuous">
         <origin xyz="0.01 -0.115 0.204" rpy="0 0 0"/>
         <parent link="housing_link"/>
         <child link="l1_shelf_back_1"/>
@@ -169,60 +174,5 @@
         <child link="housing_link"/>
         <axis xyz="-1.0 0.0 0.0"/>
     </joint>
-
-    <!-- ROS 2 Control -->
-    <ros2_control name="GazeboSystem" type="system">
-        <hardware>
-            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
-        </hardware>
-
-        <!-- Wheel joints  -->
-        <!-- Front Right Wheel Joint  -->
-        <joint name="front_right_wheel">
-            <command_interface name="velocity">
-                <param name="min">-1</param>
-                <param name="max">1</param>
-            </command_interface>
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-
-         <!-- Front Left Wheel Joint  -->
-        <joint name="front_left_wheel">
-            <command_interface name="velocity">
-                <param name="min">-1</param>
-                <param name="max">1</param>
-            </command_interface>
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-
-         <!-- Rear Right Wheel Joint  -->
-        <joint name="rear_right_wheel">
-            <command_interface name="velocity">
-                <param name="min">-1</param>
-                <param name="max">1</param>
-            </command_interface>
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-
-         <!-- Rear Left Wheel Joint  -->
-        <joint name="rear_left_wheel">
-            <command_interface name="velocity">
-                <param name="min">-1</param>
-                <param name="max">1</param>
-            </command_interface>
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-    </ros2_control>
-
-    <gazebo>
-        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-            <!-- <parameters>$(find bss_shelf_bringup)/config/scout_v2_joint_trajectory_control.yaml</parameters> -->
-            <parameters>$(find bss_shelf_bringup)/config/scout_v2_diff_drive_control.yaml</parameters>
-        </plugin>
-    </gazebo>
 
 </robot>
